@@ -1,0 +1,14 @@
+AUTHOR- SAHIL DESHPANDE (sahilsd, U81164109)
+
+FILES SUBMITTED:
+Directories FIFO/, RR/ and DRR/ contain fifo.cpp, prr.cpp, drr.cpp and three sim.hpp along with README and Makefile for further compilation and execution instructions. 
+
+The resulting files generated in results/ are .dat files with naming format <sourceID>_<measureType>_<algo>.dat e.g. 0_delay_rr.dat means delay for source 0 with RR policy. These files contain three fields, <M> <mean> <delta>. These values are plotted using gnuplot and the scripts to plot both delay and tput for each source as tput.gnu and delay.gnu (generates 2 png plots for each source).
+
+COMMON DESIGN DESCRIPTION AND FLAWS:
+All three policies manage the events using a global queue called eventQueue of template priority_type. The comparator for each event ensures a non-decreasing order of events. Arrivals for all the policies are based on exponential distribution. The main difference in these policy simulations is the departure event scheduling:
+For FIFO, we schedule departure for head of the eventQueue.
+For RR, we schedule departure for next active flow.
+For DRR, we schedule departure for next active flow with sufficient deficit.
+
+This way we ensure desired order of departures described by each policy. The statistic collection and dumping part is again common for the three codes. We count the packet sizes, arrival times, departure times to calculate throughput, response time and waiting time for each source. The values are then dumped to respective .dat files in results/ directory for further discussion. More details are in the report.
